@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head id="Head1" runat="server">
+	<title>How to Isolate This Demo as a Standalone Application (Removing the Live Demos Site Dependencies)</title>
+		<style>
+			body, html {
+				font: 12px Arial, sans-serif;
+			}
+
+			h3 {
+				font-size: 18px;
+				text-align: center;
+			}
+
+			pre {
+				background: #FFF;
+				border: 1px solid #ACE;
+				padding: 5px;
+				white-space: pre-wrap;
+				white-space: -moz-pre-wrap;
+				white-space: -pre-wrap;
+				white-space: -o-pre-wrap;
+				word-wrap: break-word;
+				_white-space: pre;
+				color: #036;
+			}
+
+			li {
+				margin: 10px;
+			}
+			#configurator-panel-instructions
+			{
+				display: none;
+			}
+			.reCodeBlock
+			{
+				margin: 10px;
+			}
+			table .reCodeBlock
+			{
+				margin: 0;
+			}
+		</style>
+	<script>
+		function toggleInstructionsPanel(shouldShow) {
+			document.getElementById("configurator-panel-instructions").style.display = shouldShow ? "block" : "none";
+		}
+		window.onload = function () {
+			var shouldShowConfiguratorInstructions = window.location.href.indexOf("showInstructions") > -1;
+			toggleInstructionsPanel(shouldShowConfiguratorInstructions);
+		}
+	</script>
+</head>
+<body>
+	<h1>How to Isolate This Demo as a Standalone Application (Removing the Live Demos Site Dependencies)</h1>
+	<p>A few tips before you begin:</p>
+	<ul>
+		<li>You can install the demos locally and open them in Visual Studio so you can review and edit the code freely in the comfort of the IDE instead of copying code from your browser. This also lets you see all files a demo uses (scripts, stylesheets, images, etc.). The path is usually <code>C:\Program Files (x86)\Progress\Telerik UI for ASP.NET AJAX QX 20YY\Live Demos</code></li>
+		<li>You can find a concrete demo on your hard drive by examining its live URL. The folder structure is the same when installed locally.</li>
+	</ul>
+	<h4>Step-by-step instructions for copying the code of a demo to a separate site:
+	</h4>
+	<ol>
+		<li><strong>Remove</strong> the <strong>irrelevant</strong> <strong>Register</strong> <strong>directives</strong> at the top of the page which are used for registering controls specific to our demos site:<br />
+			<div class="reCodeBlock" style="border: 1px solid #7f9db9; overflow-y: auto;">
+				<div style="background-color: #ffffff;"><span style="margin-left: 0px ! important;"><code style="color: #000000;">&lt;</code><code style="color: #006699; font-weight: bold;">%</code><code style="color: #000000;">@ Register TagPrefix</code><code style="color: #006699; font-weight: bold;">=</code><code style="color: blue;">"telerik"</code> <code style="color: #000000;">Namespace</code><code style="color: #006699; font-weight: bold;">=</code><code style="color: blue;">"Telerik.QuickStart"</code> <code style="color: #006699; font-weight: bold;">%</code><code style="color: #000000;">&gt;</code></span></div>
+			</div>
+		</li>
+		<li>If present,<strong> remove</strong> the following <strong>demo site specific tags</strong> and their content from the markup of the page:<br />
+			<div class="reCodeBlock" style="border: 1px solid #7f9db9; overflow-y: auto;">
+				<div style="background-color: #ffffff;"><span style="margin-left: 0px ! important;"><code style="color: #000000;">&lt;</code><code style="color: #006699; font-weight: bold;">qsf:QrCode</code> <code style="color: #000000;">... /&gt;</code></span></div>
+				<div style="background-color: #f8f8f8;"><span style="margin-left: 0px ! important;"><code style="color: #000000;">&lt;</code><code style="color: #006699; font-weight: bold;">qsf:EventLogConsole</code> <code style="color: #000000;">... /&gt;</code></span></div>
+				<div style="background-color: #ffffff;"><span style="margin-left: 0px ! important;"><code style="color: #000000;">&lt;</code><code style="color: #006699; font-weight: bold;">qsf:MessageBox</code> <code style="color: #000000;">... /&gt;</code></span></div>
+			</div>
+			<ol>
+				<li>
+					<p>
+						Tackle the <strong>Demo Configurator</strong>.<br />
+						<strong>If you do not need it, just remove its tag</strong> (<em>&lt;<span>qsf:ConfiguratorPanel</span> ... /&gt;</em>), <strong>all of its contents and all the server code related</strong> to the controls inside (Visual Studio will underline that once the control declarations are removed from the markup).
+                    <br />
+						If you want to keep the functionality on your page, <a href="javascript:void(0);" onclick="toggleInstructionsPanel(true);">click here</a>.
+					</p>
+					<div id="configurator-panel-instructions">
+						To extract the contents of the ConfiguratorPanel control to your page, follow these steps:
+                    <ol>
+						<li>
+							<p>
+								<strong>Remove</strong> the <strong>following</strong> opening <strong>tags</strong> (and their closing tags), but <strong>keep the contents on the page</strong>:
+							</p>
+							<div class="reCodeBlock" style="border: 1px solid #7f9db9; overflow-y: auto;">
+								<div style="background-color: #ffffff;"><span style="margin-left: 0px ! important;"><code style="color: #000000;">&lt;</code><code style="color: #006699; font-weight: bold;">qsf:ConfiguratorPanel</code> <code style="color: #000000;">... &gt;</code></span></div>
+								<div style="background-color: #f8f8f8;"><span><code>&nbsp;&nbsp;</code><span style="margin-left: 6px ! important;"><code style="color: #000000;">&lt;</code><code style="color: #006699; font-weight: bold;">Views</code><code style="color: #000000;">&gt;</code></span></span></div>
+								<div style="background-color: #ffffff;"><span><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><span style="margin-left: 15px ! important;"><code style="color: #000000;">&lt;</code><code style="color: #006699; font-weight: bold;">qsf:View</code> <code style="color: #000000;">... &gt;</code></span></span></div>
+								<div style="background-color: #f8f8f8;"><span><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><span style="margin-left: 24px ! important;"><code style="color: #000000;">&lt;</code><code style="color: #006699; font-weight: bold;">qsf:ConfiguratorColumn</code> <code style="color: #000000;">... &gt;</code></span></span></div>
+							</div>
+						</li>
+						<li>
+							<p>If present, <strong>replace the following tags</strong></p>
+							<p>
+								<em>Tip</em>: you can replace "<code>qsf:CheckBoxList</code>" with "<code>asp:CheckBoxList</code>" and "<code>qsf:RadioButtonList</code>" with "<code>asp:RadioButtonList</code>".
+							</p>
+							<table>
+								<thead>
+									<tr>
+										<td>Replace:</td>
+										<td>With:</td>
+									</tr>
+								</thead>
+								<tbody>
+									<tr>
+										<td>
+											<div class="reCodeBlock" style="border: 1px solid #7f9db9; overflow-y: auto;">
+												<div style="background-color: #ffffff;"><span style="margin-left: 0px ! important;"><code style="color: #000000;">&lt;</code><code style="color: #006699; font-weight: bold;">qsf:CheckBoxList</code><code style="color: #000000;">&gt;</code></span></div>
+											</div>
+										</td>
+										<td>
+											<div class="reCodeBlock" style="border: 1px solid #7f9db9; overflow-y: auto;">
+												<div style="background-color: #ffffff;"><span style="margin-left: 0px ! important;"><code style="color: #000000;">&lt;</code><code style="color: #006699; font-weight: bold;">asp:CheckBoxList</code><code style="color: #000000;">&gt;</code></span></div>
+											</div>
+										</td>
+									</tr>
+									<tr>
+										<td>
+											<div class="reCodeBlock" style="border: 1px solid #7f9db9; overflow-y: auto;">
+												<div style="background-color: #ffffff;"><span style="margin-left: 0px ! important;"><code style="color: #000000;">&lt;</code><code style="color: #006699; font-weight: bold;">qsf:RadioButtonList</code><code style="color: #000000;">&gt;</code></span></div>
+											</div>
+										</td>
+										<td>
+											<div class="reCodeBlock" style="border: 1px solid #7f9db9; overflow-y: auto;">
+												<div style="background-color: #ffffff;"><span style="margin-left: 0px ! important;"><code style="color: #000000;">&lt;</code><code style="color: #006699; font-weight: bold;">asp:RadioButtonList</code><code style="color: #000000;">&gt;</code></span></div>
+											</div>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+							<p>
+								These are native ASP controls. Our demo site applies some CSS rules to them and extends them with a few properties that you can ignore. You can find the global site stylesheets in the
+                        <code>~/Common/Styles/</code> folder.
+							</p>
+						</li>
+						<li>
+							<p>If present, <strong>replace the following tags</strong></p>
+							<p><em>Tip</em>: you can replace "<code>qsf:</code>" with "<code>telerik:Rad</code>".</p>
+							<table>
+								<thead>
+									<tr>
+										<td>Replace:</td>
+										<td>With:</td>
+									</tr>
+								</thead>
+								<tbody>
+									<tr>
+										<td>
+											<div class="reCodeBlock" style="border: 1px solid #7f9db9; overflow-y: auto;">
+												<div style="background-color: #ffffff;"><span style="margin-left: 0px ! important;"><code style="color: #000000;">&lt;</code><code style="color: #006699; font-weight: bold;">qsf:Button</code><code style="color: #000000;">&gt;</code></span></div>
+											</div>
+										</td>
+										<td>
+											<div class="reCodeBlock" style="border: 1px solid #7f9db9; overflow-y: auto;">
+												<div style="background-color: #ffffff;"><span style="margin-left: 0px ! important;"><code style="color: #000000;">&lt;</code><code style="color: #006699; font-weight: bold;">telerik:RadButton</code><code style="color: #000000;">&gt;</code></span></div>
+											</div>
+										</td>
+									</tr>
+									<tr>
+										<td>
+											<div class="reCodeBlock" style="border: 1px solid #7f9db9; overflow-y: auto;">
+												<div style="background-color: #ffffff;"><span style="margin-left: 0px ! important;"><code style="color: #000000;">&lt;</code><code style="color: #006699; font-weight: bold;">qsf:ColorPicker</code><code style="color: #000000;">&gt;</code></span></div>
+											</div>
+										</td>
+										<td>
+											<div class="reCodeBlock" style="border: 1px solid #7f9db9; overflow-y: auto;">
+												<div style="background-color: #ffffff;"><span style="margin-left: 0px ! important;"><code style="color: #000000;">&lt;</code><code style="color: #006699; font-weight: bold;">telerik:RadColorPicker</code><code style="color: #000000;">&gt;</code></span></div>
+											</div>
+										</td>
+									</tr>
+									<tr>
+										<td>
+											<div class="reCodeBlock" style="border: 1px solid #7f9db9; overflow-y: auto;">
+												<div style="background-color: #ffffff;"><span style="margin-left: 0px ! important;"><code style="color: #000000;">&lt;</code><code style="color: #006699; font-weight: bold;">qsf:ComboBox</code><code style="color: #000000;">&gt;</code></span></div>
+											</div>
+										</td>
+										<td>
+											<div class="reCodeBlock" style="border: 1px solid #7f9db9; overflow-y: auto;">
+												<div style="background-color: #ffffff;"><span style="margin-left: 0px ! important;"><code style="color: #000000;">&lt;</code><code style="color: #006699; font-weight: bold;">telerik:RadComboBox</code><code style="color: #000000;">&gt;</code></span></div>
+											</div>
+										</td>
+									</tr>
+									<tr>
+										<td>
+											<div class="reCodeBlock" style="border: 1px solid #7f9db9; overflow-y: auto;">
+												<div style="background-color: #ffffff;"><span style="margin-left: 0px ! important;"><code style="color: #000000;">&lt;</code><code style="color: #006699; font-weight: bold;">qsf:DatePicker</code><code style="color: #000000;">&gt;</code></span></div>
+											</div>
+										</td>
+										<td>
+											<div class="reCodeBlock" style="border: 1px solid #7f9db9; overflow-y: auto;">
+												<div style="background-color: #ffffff;"><span style="margin-left: 0px ! important;"><code style="color: #000000;">&lt;</code><code style="color: #006699; font-weight: bold;">telerik:RadDatePicker</code><code style="color: #000000;">&gt;</code></span></div>
+											</div>
+										</td>
+									</tr>
+									<tr>
+										<td>
+											<div class="reCodeBlock" style="border: 1px solid #7f9db9; overflow-y: auto;">
+												<div style="background-color: #ffffff;"><span style="margin-left: 0px ! important;"><code style="color: #000000;">&lt;</code><code style="color: #006699; font-weight: bold;">qsf:DateTimePicker</code><code style="color: #000000;">&gt;</code></span></div>
+											</div>
+										</td>
+										<td>
+											<div class="reCodeBlock" style="border: 1px solid #7f9db9; overflow-y: auto;">
+												<div style="background-color: #ffffff;"><span style="margin-left: 0px ! important;"><code style="color: #000000;">&lt;</code><code style="color: #006699; font-weight: bold;">telerik:RadDateTimePicker</code><code style="color: #000000;">&gt;</code></span></div>
+											</div>
+										</td>
+									</tr>
+									<tr>
+										<td>
+											<div class="reCodeBlock" style="border: 1px solid #7f9db9; overflow-y: auto;">
+												<div style="background-color: #ffffff;"><span style="margin-left: 0px ! important;"><code style="color: #000000;">&lt;</code><code style="color: #006699; font-weight: bold;">qsf:DropDownList</code><code style="color: #000000;">&gt;</code></span></div>
+											</div>
+										</td>
+										<td>
+											<div class="reCodeBlock" style="border: 1px solid #7f9db9; overflow-y: auto;">
+												<div style="background-color: #ffffff;"><span style="margin-left: 0px ! important;"><code style="color: #000000;">&lt;</code><code style="color: #006699; font-weight: bold;">telerik:RadDropDownList</code><code style="color: #000000;">&gt;</code></span></div>
+											</div>
+										</td>
+									</tr>
+									<tr>
+										<td>
+											<div class="reCodeBlock" style="border: 1px solid #7f9db9; overflow-y: auto;">
+												<div style="background-color: #ffffff;"><span style="margin-left: 0px ! important;"><code style="color: #000000;">&lt;</code><code style="color: #006699; font-weight: bold;">qsf:MaskedTextBox</code><code style="color: #000000;">&gt;</code></span></div>
+											</div>
+										</td>
+										<td>
+											<div class="reCodeBlock" style="border: 1px solid #7f9db9; overflow-y: auto;">
+												<div style="background-color: #ffffff;"><span style="margin-left: 0px ! important;"><code style="color: #000000;">&lt;</code><code style="color: #006699; font-weight: bold;">telerik:RadMaskedTextBox</code><code style="color: #000000;">&gt;</code></span></div>
+											</div>
+										</td>
+									</tr>
+									<tr>
+										<td>
+											<div class="reCodeBlock" style="border: 1px solid #7f9db9; overflow-y: auto;">
+												<div style="background-color: #ffffff;"><span style="margin-left: 0px ! important;"><code style="color: #000000;">&lt;</code><code style="color: #006699; font-weight: bold;">qsf:NumericTextBox</code><code style="color: #000000;">&gt;</code></span></div>
+											</div>
+										</td>
+										<td>
+											<div class="reCodeBlock" style="border: 1px solid #7f9db9; overflow-y: auto;">
+												<div style="background-color: #ffffff;"><span style="margin-left: 0px ! important;"><code style="color: #000000;">&lt;</code><code style="color: #006699; font-weight: bold;">telerik:RadNumericTextBox</code><code style="color: #000000;">&gt;</code></span></div>
+											</div>
+										</td>
+									</tr>
+									<tr>
+										<td>
+											<div class="reCodeBlock" style="border: 1px solid #7f9db9; overflow-y: auto;">
+												<div style="background-color: #ffffff;"><span style="margin-left: 0px ! important;"><code style="color: #000000;">&lt;</code><code style="color: #006699; font-weight: bold;">qsf:Slider</code><code style="color: #000000;">&gt;</code></span></div>
+											</div>
+										</td>
+										<td>
+											<div class="reCodeBlock" style="border: 1px solid #7f9db9; overflow-y: auto;">
+												<div style="background-color: #ffffff;"><span style="margin-left: 0px ! important;"><code style="color: #000000;">&lt;</code><code style="color: #006699; font-weight: bold;">telerik:RadSlider</code><code style="color: #000000;">&gt;</code></span></div>
+											</div>
+										</td>
+									</tr>
+									<tr>
+										<td>
+											<div class="reCodeBlock" style="border: 1px solid #7f9db9; overflow-y: auto;">
+												<div style="background-color: #ffffff;"><span style="margin-left: 0px ! important;"><code style="color: #000000;">&lt;</code><code style="color: #006699; font-weight: bold;">qsf:TextBox</code><code style="color: #000000;">&gt;</code></span></div>
+											</div>
+										</td>
+										<td>
+											<div class="reCodeBlock" style="border: 1px solid #7f9db9; overflow-y: auto;">
+												<div style="background-color: #ffffff;"><span style="margin-left: 0px ! important;"><code style="color: #000000;">&lt;</code><code style="color: #006699; font-weight: bold;">telerik:RadTextBox</code><code style="color: #000000;">&gt;</code></span></div>
+											</div>
+										</td>
+									</tr>
+									<tr>
+										<td>
+											<div class="reCodeBlock" style="border: 1px solid #7f9db9; overflow-y: auto;">
+												<div style="background-color: #ffffff;"><span style="margin-left: 0px ! important;"><code style="color: #000000;">&lt;</code><code style="color: #006699; font-weight: bold;">qsf:TimePicker</code><code style="color: #000000;">&gt;</code></span></div>
+											</div>
+										</td>
+										<td>
+											<div class="reCodeBlock" style="border: 1px solid #7f9db9; overflow-y: auto;">
+												<div style="background-color: #ffffff;"><span style="margin-left: 0px ! important;"><code style="color: #000000;">&lt;</code><code style="color: #006699; font-weight: bold;">telerik:RadTimePicker</code><code style="color: #000000;">&gt;</code></span></div>
+											</div>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+							<p>
+								These are Telerik UI for ASP.NET AJAX controls. Our demo site extends them with some default values, and applies a common custom skin to them. Replacing the tags as instructed above will let you run the controls without the customized appearance and properties from the demo. Their full code is located in the <code>~/App_Code/QSFCommon/SupplementaryControls/Configurator</code> folder and you can freely examine/reuse it. The custom skin is located under <code>~/Common/Styles/qsf-skin.css</code>
+							</p>
+						</li>
+					</ol>
+					</div>
+				</li>
+			</ol>
+		</li>
+		<li>If used in the demo, <strong>copy the scripts (scripts.js file)</strong> and, optionally, the stylesheets (styles.css) and images from the demo folder. Having the scripts is mandatory, otherwise script errors may be thrown and break the page. The stylesheets and images can help you mimic the appearance but are not compulsory. If there are other files used by the demo (e.g., ToosFile.xml or XML data source), copy them too.</li>
+		<li>If the demo uses <strong>WebServices</strong>, <strong>LINQ</strong> to XXXX <strong>models</strong>, <strong>Entity Framework models</strong>, <strong>custom classes, etc.</strong>, you can find those either under the respective example's code viewer or at the demos installation <strong>in the App_Code folder</strong> (the path may vary if you have chosen another target installation directory):
+                <br />
+			<pre>C:\Program Files (x86)\Progress\Telerik UI for ASP.NET AJAX QX 20YY\Live Demos\App_Code </pre>
+			<p>If you are building a separate web site, you need to copy the needed WebServices, models, custom classes, etc. to the App_Code folder of your own web site. </p>
+		</li>
+		<li>The <strong>databases</strong> used in the examples are located at the demos installation <strong>in the App_Data folder</strong> (the path may vary if you have chosen another target installation directory):
+                <br />
+			<pre>C:\Program Files (x86)\Progress\Telerik UI for ASP.NET AJAX QX 20YY\Live Demos\App_Data</pre>
+			<p>
+				If you are building a separate web site, you need to copy the needed databases to the App_Data folder of your own web site and attach them to your SQL server if you plan to use them. You can find our <strong>connectionStrings in the web.config at the root of the Live Demos site</strong> so you can tweak them according to your environment.<br />
+				In case XML (or other) files are used as a data source, they are located in the concrete demo;s folder so you should copy them to your own site.
+			</p>
+		</li>
+	</ol>
+</body>
+</html>
